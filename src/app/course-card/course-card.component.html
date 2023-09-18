@@ -1,0 +1,32 @@
+<ng-container *ngIf="course">
+    <div class="course-card" [ngClass]="cardClasses()">
+
+        <div class="course-title" [ngStyle]="cardTitleStyle()">
+            {{ cardIndex + ' ' + course.description }}
+        </div>
+        <img *ngIf="course.iconUrl; else noImage" width="300" alt="{{course.longDescription}}"
+            src="{{course.iconUrl}}">
+
+        <ng-template #noImage>
+            <p>No image available.</p>
+        </ng-template>
+        <div class="course-description">
+            {{ course.longDescription }}
+        </div>
+
+        <div class="course-cagegory" [ngSwitch]="course.category">
+            <div class="category" *ngSwitchCase="'BEGINNER'">Beginner</div>
+            <div class="category" *ngSwitchCase="'INTERMEDIATE'">Intermediate</div>
+            <div class="category" *ngSwitchCase="'ADVANCED'">Advanced</div>
+            <div class="category" *ngSwitchDefault>All Levels</div>
+        </div>
+
+        <button (click)="onCourseView()">View Course</button>
+    </div>
+
+    <!-- useful for debugging -->
+    <!--
+        <div *ngFor="let pair of course | keyvalue">
+        {{ pair.key }}: {{ pair.value }}
+    </div> -->
+</ng-container>
