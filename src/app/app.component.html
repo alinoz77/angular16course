@@ -6,18 +6,42 @@
 </div>
 
 
+<button (click)="onAddCourse()">Add Course</button>
+
+<ng-template #blankImage let-courseName="description">
+    <p class="warn">{{courseName}} has no image available.</p>
+    <img src="/assets/empty-image.png">
+</ng-template>
+
 <div class="courses" #courseContainer>
-    <course-card #firstCourse
+    <course-card
+         #firstCourse
         (courseSelected)="onCourseSelected($event)"
-        [course]="courses[0]" [cardIndex]=""></course-card>
+        [course]="courses[0]" [cardIndex]="0"></course-card>
 
     <course-card *ngFor="let course of courses; index as i; first as isFirst; last as isLast; even as isEven; odd as isOdd" 
         [class.is-first]="isFirst"
         [class.is-last]="isLast"
         [class.is-even]="isEven"
         [class.is-odd]="isOdd"
+        highlighted #highlighter="hl"
+        (toggleHighlight)="onToggleHighlight($event)"
         (courseSelected)="onCourseSelected($event)"
-        [course]="course" [cardIndex]="i + 1"></course-card>
+        [noImageTemplate]="blankImage"
+        [course]="course" [cardIndex]="i + 1">
+
+        <course-image class="course-image" 
+            *ngxUnless="!course.iconUrl"
+            [iconUrl]="course.iconUrl" [description]="course.description"></course-image>
+
+        <div class="course-extra-details" *ngIf="course.lessonsCount">
+            <h5> Number of lessons: {{course.lessonsCount}}</h5>
+        </div>
+        tHis will not be displayed because is a not maching the ng-content select class
+        <div class="course-cost" (dblclick)="highlighter.toggle()">
+            <h5> Costs: {{course.id | currency}}</h5>
+        </div>
+    </course-card>
     
 </div>
 

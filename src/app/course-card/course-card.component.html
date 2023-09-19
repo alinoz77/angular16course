@@ -4,15 +4,19 @@
         <div class="course-title" [ngStyle]="cardTitleStyle()">
             {{ cardIndex + ' ' + course.description }}
         </div>
-        <img *ngIf="course.iconUrl; else noImage" width="300" alt="{{course.longDescription}}"
-            src="{{course.iconUrl}}">
-
+        
+        <ng-content select=".course-image" *ngIf="course.iconUrl; else noImage"></ng-content>
         <ng-template #noImage>
-            <p>No image available.</p>
+            <ng-container *ngTemplateOutlet="noImageTemplate; context: {description: course.description}"></ng-container>
         </ng-template>
+
+
+
         <div class="course-description">
             {{ course.longDescription }}
         </div>
+
+        <ng-content select=".course-extra-details"></ng-content>
 
         <div class="course-cagegory" [ngSwitch]="course.category">
             <div class="category" *ngSwitchCase="'BEGINNER'">Beginner</div>
@@ -20,7 +24,8 @@
             <div class="category" *ngSwitchCase="'ADVANCED'">Advanced</div>
             <div class="category" *ngSwitchDefault>All Levels</div>
         </div>
-
+        <ng-content select=".course-cost"></ng-content>
+        
         <button (click)="onCourseView()">View Course</button>
     </div>
 
